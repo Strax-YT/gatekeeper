@@ -1,0 +1,21 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    env_file: [.env]
+    volumes: ["workflow-data:/app/data"]
+
+  ui:
+    build: .
+    command: >
+      streamlit run src/ui/app.py
+      --server.port 8501 --server.address 0.0.0.0 --server.headless true
+    ports: ["8501:8501"]
+    env_file: [.env]
+    # Both services share the checkpoint volume, which is how a run started
+    # by the API can be approved in the UI.
+    volumes: ["workflow-data:/app/data"]
+    depends_on: [api]
+
+volumes:
+  workflow-data:

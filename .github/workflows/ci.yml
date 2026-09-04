@@ -1,0 +1,41 @@
+name: tests and evals
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements-dev.txt
+
+      - name: Lint
+        run: ruff check src evals tests scripts
+
+      - name: Unit and integration tests
+        run: pytest tests -q
+
+      # The eval suite is a build gate, not a report. Plan quality has soft
+      # thresholds; the safety invariants (no unapproved irreversible action,
+      # no side effect after a refusal) fail the build on a single violation.
+      # No API key is set here, so the deterministic planner is used and the
+      # run is reproducible.
+      - name: Agent evals
+        run: python -m evals.run_evals
+
+      - name: Upload eval report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: evals/report.json

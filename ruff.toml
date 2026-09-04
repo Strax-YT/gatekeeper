@@ -1,0 +1,13 @@
+line-length = 120
+target-version = "py312"
+
+[lint]
+select = ["E", "F", "W", "I", "UP", "B", "RUF"]
+ignore = [
+  "E402",    # module imports after sys.path setup: required for the UI and evals entrypoints
+  "B008",    # FastAPI dependency defaults
+  "RUF012",  # mutable class defaults are fine in dataclasses here
+]
+
+[lint.per-file-ignores]
+"tests/*" = ["E501"]

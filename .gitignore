@@ -1,0 +1,22 @@
+# Never commit the virtualenv. This is the most common junior-repo mistake.
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Secrets
+.env
+*.pem
+
+# Runtime artefacts: checkpoints, traces, the simulated systems of record
+data/
+evals/report.json
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store

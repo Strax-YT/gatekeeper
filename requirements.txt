@@ -1,0 +1,6 @@
+langgraph>=1.0,<2
+langgraph-checkpoint-sqlite>=3,<4
+fastapi>=0.115
+uvicorn[standard]>=0.30
+streamlit>=1.40
+pyyaml>=6.0
